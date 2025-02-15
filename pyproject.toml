@@ -1,6 +1,6 @@
 [project]
 name = "autonomous-agent-framework"
-version = "0.1.0"
+version = "0.1.1"
 description = "A flexible Python framework for creating autonomous agents that can discover and utilize tools dynamically"
 authors = [
     {name = "Your Name", email = "your.email@example.com"}
@@ -15,6 +15,7 @@ dependencies = [
     "cryptography>=3.4.7",
     "keyring>=24.0.0",
     "setuptools>=69.0.0",
+    "httpx>=0.24.0",  # Required by OpenAI client
 ]
 requires-python = ">=3.8"
 readme = "README.md"
@@ -37,7 +38,12 @@ build-backend = "hatchling.build"
 exclude = [
     "venv",
     "venv/*",
+    "test_env",
+    "test_env/*",
+    "fresh_env",
+    "fresh_env/*",
     ".env",
+    ".env.*",
     ".git",
     ".gitignore",
     ".pytest_cache",
@@ -47,8 +53,12 @@ exclude = [
     "*.pyd",
     ".Python",
     "build",
-    "dist"
+    "dist",
+    "*.egg-info"
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/autonomous_agent_framework"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

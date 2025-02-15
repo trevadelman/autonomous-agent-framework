@@ -24,7 +24,10 @@ wheels/
 venv/
 env/
 ENV/
+fresh_env/
+test_env/
 .env
+.env.*
 
 # IDE
 .idea/
