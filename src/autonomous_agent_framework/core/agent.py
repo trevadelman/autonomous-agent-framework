@@ -1,8 +1,23 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
+import os
+import asyncio
+import logging
+from openai import AsyncOpenAI
+from dotenv import load_dotenv
 
 from pydantic import BaseModel
+
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Load environment variables
+load_dotenv()
 
 
 class ModelType(str, Enum):
@@ -41,6 +56,14 @@ class Agent(ABC):
         self.config = config
         self._validate_config()
         self.tool_history: List[Dict[str, Any]] = []
+        
+        # Initialize OpenAI client
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY environment variable is not set")
+        
+        logger.info("Initializing OpenAI client")
+        self.client = AsyncOpenAI(api_key=api_key)
     
     @abstractmethod
     async def execute(self, task: str) -> AgentResponse:
@@ -105,15 +128,65 @@ class AutonomousAgent(Agent):
             AgentResponse containing execution results and metadata.
         """
         try:
-            # TODO: Implement core execution logic
-            # This will be expanded as we implement the tool discovery
-            # and execution systems
+            # Create messages for the model
+            messages = [
+                {"role": "system", "content": self.config.system_prompt},
+                {"role": "user", "content": task}
+            ]
+            
+            result = None
+            tokens_used = None
+            api_error = None
+            
+            # Call OpenAI API with retries
+            for attempt in range(3):  # Maximum 3 retries
+                try:
+                    logger.info(f"Attempt {attempt + 1} to call OpenAI API")
+                    response = await self.client.chat.completions.create(
+                        model=self.config.model.value,
+                        messages=messages,
+                        temperature=self.config.temperature,
+                        max_tokens=self.config.max_tokens
+                    )
+                    
+                    # Extract the response
+                    if response and response.choices:
+                        result = response.choices[0].message.content
+                        tokens_used = response.usage.total_tokens if response.usage else None
+                        logger.info(f"Successfully got response from OpenAI API")
+                        break
+                    else:
+                        logger.error(f"Empty response from OpenAI API")
+                        api_error = "Empty response from API"
+                        
+                except Exception as e:
+                    api_error = str(e)
+                    logger.error(f"API call failed on attempt {attempt + 1}: {api_error}")
+                    logger.error(f"API key length: {len(os.getenv('OPENAI_API_KEY', ''))}")
+                    if attempt == 2:  # Last attempt
+                        break
+                    # Exponential backoff
+                    await asyncio.sleep(2 ** attempt)  # 1s, 2s, 4s
+            
+            if result is None:
+                error_msg = f"Failed to get response from OpenAI API after 3 attempts: {api_error}"
+                logger.error(error_msg)
+                raise Exception(error_msg)
+            
+            # Record tool usage
+            self.tool_history.append({
+                "tool": "openai_api",
+                "task": task,
+                "success": True,
+                "tokens": tokens_used
+            })
             
             return AgentResponse(
                 success=True,
-                result="Task execution not yet implemented",
+                result=result,
                 model_used=self.config.model,
-                tool_usage=[]
+                tool_usage=self.tool_history,
+                tokens_used=tokens_used
             )
             
         except Exception as e:
