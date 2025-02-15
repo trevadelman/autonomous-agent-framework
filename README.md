@@ -1,104 +1,82 @@
 # Autonomous Agent Framework
 
-A flexible and intelligent Python framework for creating autonomous agents that can discover, learn, and utilize tools dynamically to accomplish tasks.
+A flexible Python framework for creating autonomous agents that can discover and utilize tools dynamically.
 
-## Philosophy
+## Project Philosophy
 
-Traditional agent frameworks require explicit tool definitions and rigid structures. This framework takes a different approach by enabling agents to:
-1. Dynamically discover available tools and capabilities
-2. Request necessary credentials or information when needed
-3. Learn from usage patterns to improve tool selection
-4. Maintain security while having flexibility
+The Autonomous Agent Framework is built on several core principles:
 
-## Key Features
+1. **Dynamic Discovery**: Agents should be able to discover and adapt to available tools in their environment, rather than requiring explicit tool definitions.
 
-### Dynamic Tool Discovery
-- Automatic scanning of system capabilities
-- Understanding of tool documentation and requirements
-- Smart matching of tools to task requirements
+2. **Security First**: All operations should be secure by default, with proper credential management, permissions, and resource limits.
 
-### Intelligent Tool Selection
-- Context-aware tool recommendations
-- Learning from successful patterns
-- Adaptation to user preferences
+3. **Learn and Adapt**: Agents should learn from their experiences, improving tool selection and usage over time.
 
-### Secure Credential Management
-- Safe storage of API keys and credentials
-- Just-in-time credential requests
-- Encrypted storage with proper scope isolation
+4. **User Control**: While autonomous, agents should respect user-defined boundaries and always operate within specified constraints.
 
-### Learning System
-- Pattern recognition in successful tool usage
-- Improvement through experience
-- Knowledge sharing between tasks
+5. **Extensibility**: The framework should be easily extensible to support new tools, capabilities, and use cases.
 
-## Basic Usage
+## Core Goals
 
-```python
-# Create an autonomous agent
-agent = AutonomousAgent(
-    model="gpt-4o-mini",  # Choose model based on task requirements
-    system_prompt="You are a capable agent that can accomplish tasks..."
-)
+- Enable the creation of truly autonomous agents that can understand and utilize tools in their environment
+- Provide robust security measures to ensure safe and controlled agent operations
+- Implement learning mechanisms that improve agent performance over time
+- Support a wide range of applications from simple automation to complex problem-solving
+- Maintain high code quality with comprehensive testing and documentation
 
-# Execute a task
-result = agent.execute("Create a React website with a todo list")
+## Features
 
-# Agent will:
-# 1. Discover available tools (npm, file operations, etc.)
-# 2. Request any needed credentials
-# 3. Execute the task using optimal tools
-# 4. Learn from the experience
+- 🔍 **Dynamic Tool Discovery**: Automatically discover and utilize available tools
+- 🔐 **Secure Credential Management**: Safe storage and handling of sensitive data
+- 📚 **Learning System**: Track usage patterns and get smart tool recommendations
+- 🛡️ **Security & Validation**: Built-in permission system and resource limits
+- 🔄 **Async Support**: Built for modern async/await patterns
+- 📊 **Performance Monitoring**: Track and analyze tool usage metrics
 
-# Example with different model for complex reasoning
-agent_complex = AutonomousAgent(
-    model="o3-mini",  # Better for tasks requiring deep analysis
-    system_prompt="You are an agent specialized in complex problem-solving..."
-)
-```
+## Quick Start
 
-## Installation
+See our [Setup Guide](docs/setup.md) for detailed installation instructions and a Hello World example.
 
 ```bash
-pip install autonomous-agent-framework  # Coming soon
+# Clone the repository
+git clone https://github.com/trevadelman/autonomous-agent-framework.git
+
+# Install the package
+pip install -e ".[dev]"
+
+# Create your first agent
+from autonomous_agent_framework import AutonomousAgent, AgentConfig, ModelType
+
+agent = AutonomousAgent(
+    AgentConfig(
+        model=ModelType.GPT35_TURBO,
+        system_prompt="You are a helpful assistant."
+    )
+)
 ```
+
+## Documentation
+
+- [Setup Guide](docs/setup.md) - Get started with installation and basic usage
+- [Usage Guide](docs/usage_guide.md) - Learn about advanced features and patterns
+- [API Documentation](docs/api/core.md) - Detailed API reference
+- [Tool Discovery](docs/api/tools.md) - Learn about the tool discovery system
+- [Development Roadmap](docs/ROADMAP.md) - See our development plans and progress
 
 ## Requirements
 
 - Python 3.8+
-- OpenAI API key for model integration:
-  - GPT-3.5 Turbo: Fast, cost-effective for routine tasks
-  - GPT-4o mini: Multimodal capabilities (text, image, audio)
-  - o3-mini: Advanced reasoning and complex logic
-  - DALL-E: Image generation (optional)
-  - Whisper: Audio transcription (optional)
-
-See our [Model Selection Guide](docs/ModelSelection.md) for detailed comparisons and use cases.
-
-## Model Selection
-
-The framework supports multiple OpenAI models, each optimized for different use cases:
-
-- **GPT-3.5 Turbo**: Best for high-volume, routine tasks where cost-efficiency is priority
-- **GPT-4o mini**: Ideal for tasks requiring multimodal processing (text, image, audio)
-- **o3-mini**: Recommended for complex reasoning and advanced problem-solving
-- **DALL-E**: Available for image generation tasks
-- **Whisper**: Integrated for audio transcription needs
-
-The framework automatically suggests the most appropriate model based on task requirements and past performance patterns.
-
-## Security Considerations
-
-The framework prioritizes security through:
-- Tool usage validation
-- Credential encryption
-- Permission scoping
-- User confirmation for sensitive operations
+- OpenAI API key for model access
+- Modern Python tooling (pip, venv)
 
 ## Contributing
 
-We welcome contributions! See our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Security
+
+For security concerns, please file a private issue or contact the maintainers directly.
