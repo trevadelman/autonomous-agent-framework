@@ -1,0 +1,74 @@
+[project]
+name = "autonomous-agent-framework"
+version = "0.1.0"
+description = "A flexible Python framework for creating autonomous agents that can discover and utilize tools dynamically"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+packages = [
+    {include = "autonomous_agent_framework", from = "src"}
+]
+dependencies = [
+    "openai>=1.0.0",
+    "python-dotenv>=0.19.0",
+    "pydantic>=2.0.0",
+    "cryptography>=3.4.7",
+    "keyring>=24.0.0",
+    "setuptools>=69.0.0",
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black>=22.0",
+    "isort>=5.0",
+    "mypy>=0.900",
+    "ruff>=0.1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+    "venv",
+    "venv/*",
+    ".env",
+    ".git",
+    ".gitignore",
+    ".pytest_cache",
+    "__pycache__",
+    "*.pyc",
+    "*.pyo",
+    "*.pyd",
+    ".Python",
+    "build",
+    "dist"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"

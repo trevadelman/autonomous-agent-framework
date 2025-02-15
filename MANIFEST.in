@@ -1,0 +1,29 @@
+# Documentation
+include docs/README.md
+include docs/ROADMAP.md
+include docs/ModelSelection.md
+include docs/usage_guide.md
+recursive-include docs/api *.md
+
+# License and other important files
+include LICENSE
+include README.md
+include pyproject.toml
+include setup.py
+
+# Test files
+recursive-include tests *.py
+
+# Exclude development and temporary files
+global-exclude *.py[cod]
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude .env
+global-exclude .git*
+global-exclude .pytest_cache
+global-exclude .coverage
+global-exclude htmlcov/
+global-exclude *.egg-info/
+global-exclude venv/
+global-exclude venv/*
