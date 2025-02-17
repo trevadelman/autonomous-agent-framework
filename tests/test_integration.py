@@ -51,6 +51,23 @@ def credential_manager(temp_config_dir):
         mp.setattr(Path, "home", lambda: temp_config_dir.parent.parent)
         # Mock getpass to avoid password prompt
         mp.setattr("getpass.getpass", lambda _: "test_password")
+        # Use a simple in-memory dict for testing
+        import keyring
+        class TestKeyring(keyring.backend.KeyringBackend):
+            """Simple in-memory keyring for testing."""
+            def __init__(self):
+                self.passwords = {}
+
+            def get_password(self, servicename, username):
+                return self.passwords.get((servicename, username))
+
+            def set_password(self, servicename, username, password):
+                self.passwords[(servicename, username)] = password
+
+            def delete_password(self, servicename, username):
+                self.passwords.pop((servicename, username), None)
+
+        keyring.set_keyring(TestKeyring())
         return CredentialManager(app_name="test_framework")
 
 @pytest.fixture
