@@ -81,21 +81,8 @@ if __name__ == "__main__":
 2. Set up your OpenAI API key:
 ```bash
 # Create .env file
-cp .env.example .env
-# Edit .env with your OpenAI API key
+echo "OPENAI_API_KEY=your-api-key-here" > .env
 ```
-
-Your .env file should contain:
-```env
-# OpenAI API Configuration
-OPENAI_API_KEY=your-api-key-here  # Get this from https://platform.openai.com/api-keys
-
-# Optional: Model Configuration
-OPENAI_MODEL=gpt-3.5-turbo  # Default model to use
-OPENAI_TEMPERATURE=0.7      # Default temperature for responses
-```
-
-Note: You'll need an OpenAI account and API key to use the framework. Visit https://platform.openai.com to sign up and create an API key.
 
 3. Run the example:
 ```bash
