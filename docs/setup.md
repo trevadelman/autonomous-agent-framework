@@ -4,7 +4,7 @@ This guide will walk you through setting up the Autonomous Agent Framework and c
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.12 or higher (required for datetime.UTC)
 - Git
 - pip (Python package installer)
 - A virtual environment tool (like venv)
@@ -19,8 +19,8 @@ cd autonomous-agent-framework
 
 2. Create and activate a virtual environment:
 ```bash
-# Create virtual environment
-python -m venv venv
+# Create virtual environment with Python 3.12
+python3.12 -m venv venv
 
 # Activate on Unix/macOS
 source venv/bin/activate
@@ -36,7 +36,8 @@ pip install -e ".[dev]"
 
 4. Verify installation by running tests:
 ```bash
-pytest
+# Make sure to use Python 3.12 for running tests
+python3.12 -m pytest
 ```
 
 ## Hello World Example
@@ -86,7 +87,7 @@ echo "OPENAI_API_KEY=your-api-key-here" > .env
 
 3. Run the example:
 ```bash
-python hello_world.py
+python3.12 hello_world.py
 ```
 
 Expected output will look something like:
@@ -165,7 +166,7 @@ pip install -e ".[dev]"
 
 4. Run tests before and after making changes:
 ```bash
-pytest
+python3.12 -m pytest
 ```
 
 5. Submit a pull request with your changes
