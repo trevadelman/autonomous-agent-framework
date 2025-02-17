@@ -16,7 +16,7 @@ dependencies = [
     "keyring>=24.0.0",
     "setuptools>=69.0.0",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
 
