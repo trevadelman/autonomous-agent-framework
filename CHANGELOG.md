@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-02-15
+## [0.1.0] - 2025-02-17
 
 ### Added
 - Initial release of the Autonomous Agent Framework
@@ -34,9 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - API documentation
   - Usage guide
   - Best practices
+- Setup guide with Python 3.12 requirements
 
 ### Changed
-- N/A (initial release)
+- Updated project to require Python 3.12 for datetime.UTC support
+- Replaced deprecated pkg_resources with importlib.metadata
 
 ### Deprecated
 - N/A (initial release)

@@ -1,5 +1,7 @@
 # Documentation
+include CHANGELOG.md
 include docs/README.md
+include docs/setup.md
 include docs/ROADMAP.md
 include docs/ModelSelection.md
 include docs/usage_guide.md
