@@ -24,10 +24,10 @@ wheels/
 venv/
 env/
 ENV/
+.env*
+!.env.example
 fresh_env/
-test_env/
-.env
-.env.*
+test_install/
 
 # IDE
 .idea/
