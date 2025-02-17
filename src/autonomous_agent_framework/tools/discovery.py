@@ -1,7 +1,7 @@
 import os
 import subprocess
 from typing import Any, Dict, List, Optional, Set
-import pkg_resources
+from importlib.metadata import distributions, Distribution
 import shutil
 from pathlib import Path
 
@@ -112,24 +112,25 @@ class ToolDiscovery:
 
     async def _discover_python_packages(self) -> None:
         """Discover installed Python packages and their capabilities."""
-        for dist in pkg_resources.working_set:
+        for dist in distributions():
             try:
-                metadata = dist.get_metadata("METADATA")
+                metadata = dist.metadata
                 capabilities = set()
                 
                 # Analyze package metadata for capabilities
-                if any(kw in metadata.lower() for kw in ["file", "io", "read", "write"]):
+                metadata_text = str(metadata).lower()
+                if any(kw in metadata_text for kw in ["file", "io", "read", "write"]):
                     capabilities.update([ToolCapability.FILE_READ, ToolCapability.FILE_WRITE])
-                if any(kw in metadata.lower() for kw in ["http", "api", "request"]):
+                if any(kw in metadata_text for kw in ["http", "api", "request"]):
                     capabilities.add(ToolCapability.NETWORK)
-                if any(kw in metadata.lower() for kw in ["sql", "database", "db"]):
+                if any(kw in metadata_text for kw in ["sql", "database", "db"]):
                     capabilities.add(ToolCapability.DATABASE)
                 
-                self._discovered_tools[dist.key] = ToolMetadata(
-                    name=dist.key,
+                self._discovered_tools[dist.name] = ToolMetadata(
+                    name=dist.name,
                     category=ToolCategory.PYTHON_PACKAGE,
                     capabilities=capabilities,
-                    description=dist.description or "No description available",
+                    description=metadata.get("Summary", "No description available"),
                     version=dist.version
                 )
             except Exception:
